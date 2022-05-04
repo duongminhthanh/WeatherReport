@@ -1,0 +1,2 @@
+thư viện volley dùng để đọc dữ liệu từ url về
+thư viện picasso dùng để đọc dữ liệu hình ảnh qua internet
