@@ -45,7 +45,7 @@
         android:layout_marginTop="2dp"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:src="@drawable/rain"/>
+        />
     <TextView
         android:layout_marginTop="2dp"
         android:id="@+id/txtTemp"
@@ -78,8 +78,7 @@
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/rain" />
+                android:layout_height="172dp" />
 
             <TextView
                 android:id="@+id/txtHumidity"
@@ -99,7 +98,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="172dp"
-                android:src="@drawable/cloud" />
+               />
 
             <TextView
                 android:id="@+id/txtCloud"
@@ -119,7 +118,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="172dp"
-                android:src="@drawable/wind" />
+               />
 
             <TextView
                 android:id="@+id/txtWind"
