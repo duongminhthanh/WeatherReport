@@ -3,7 +3,7 @@ package com.example.weatherreport;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -62,41 +62,43 @@ public class MainActivity extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue( MainActivity.this );
         String url = "https://api.openweathermap.org/data/2.5/weather?q=" + data + "&units=metric&appid=5ceabeb9f84c5ce0b82a8d53243c81f6";
         StringRequest stringRequest = new StringRequest( Request.Method.GET, url,
-                response -> {
-                    try {
-                        JSONObject jsonObject = new JSONObject( response );
-                        String day = jsonObject.getString( "date" );
-                        String name = jsonObject.getString( "name" );
-                        txtName.setText( "Name of City: " + name );
-                        Long l = Long.valueOf( day );
-                        Date date = new Date( l * 1000L );
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "EEEE dd-MM--yyyy HH-mm-ss" );
-                        String Day = simpleDateFormat.format( date );
-                        txtDay.setText( Day );
-                        JSONArray jsonArrayWeather = jsonObject.getJSONArray( "weather" );
-                        JSONObject jsonObjectWeather = jsonArrayWeather.getJSONObject( 0 );
-                        String status = jsonObjectWeather.getString( "main" );
-                        String icon = jsonObjectWeather.getString( "icon" );
-                        Picasso.with( MainActivity.this ).load( "https://openweathermap.org/img/wn/" + icon + ".png" ).into( imgIcon );
-                        txtStatus.setText( status );
-                        JSONObject jsonObjectMain = jsonObject.getJSONObject( "main" );
-                        String temp = jsonObjectMain.getString( "temp" );
-                        String humid = jsonObjectMain.getString( "humidity" );
-                        Double a = Double.valueOf( temp );
-                        String temperatue = String.valueOf( a.intValue() );
-                        txtTemp.setText( "temp: " + "°C" );
-                        txtHumidity.setText( "humid: " + "%" );
-                        JSONObject jsonObjectWind = jsonObject.getJSONObject( "wind" );
-                        String wind = jsonObjectWind.getString( "speed" );
-                        txtWind.setText( wind + "m/s" );
-                        JSONObject jsonObjectClouds = jsonObject.getJSONObject( "clouds" );
-                        String cloud = jsonObjectClouds.getString( "all" );
-                        txtCloud.setText( cloud + "%" );
-                        JSONObject jsonObjectSys = jsonObject.getJSONObject( "sys" );
-                        String country = jsonObjectSys.getString( "country" );
-                        txtCountry.setText( "Country name: " + country );
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject( response );
+                            String name = jsonObject.getString( "name" );
+                            txtName.setText( "Name of City: " + name );
+
+                            Date date = new Date();
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "EEEE ,dd-MM-yyyy, HH:mm:ss" );
+                            String Day = simpleDateFormat.format( date );
+                            txtDay.setText( Day );
+                            JSONArray jsonArrayWeather = jsonObject.getJSONArray( "weather" );
+                            JSONObject jsonObjectWeather = jsonArrayWeather.getJSONObject( 0 );
+                            String status = jsonObjectWeather.getString( "main" );
+                            String icon = jsonObjectWeather.getString( "icon" );
+                            Picasso.with( MainActivity.this ).load( "https://openweathermap.org/img/wn/" + icon + ".png" ).into( imgIcon );
+                            txtStatus.setText( status );
+                            JSONObject jsonObjectMain = jsonObject.getJSONObject( "main" );
+                            String temp = jsonObjectMain.getString( "temp" );
+                            String humid = jsonObjectMain.getString( "humidity" );
+                            Double a = Double.valueOf( temp );
+                            String temperatue = String.valueOf( a.intValue() );
+                            txtTemp.setText( "temp: " + temperatue + "°C" );
+                            txtHumidity.setText( humid + "%" );
+                            JSONObject jsonObjectWind = jsonObject.getJSONObject( "wind" );
+                            String wind = jsonObjectWind.getString( "speed" );
+                            txtWind.setText( wind + "m/s" );
+                            JSONObject jsonObjectClouds = jsonObject.getJSONObject( "clouds" );
+                            String cloud = jsonObjectClouds.getString( "all" );
+                            txtCloud.setText( cloud + "%" );
+                            JSONObject jsonObjectSys = jsonObject.getJSONObject( "sys" );
+                            String country = jsonObjectSys.getString( "country" );
+                            txtCountry.setText( "Country name: " + country );
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
