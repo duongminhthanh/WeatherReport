@@ -2,6 +2,7 @@ package com.example.weatherreport;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.view.View;
@@ -21,7 +22,6 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,14 +31,15 @@ public class MainActivity extends AppCompatActivity {
     Button btnSearch, btnChangeActivity;
     TextView txtName, txtCountry, txtTemp, txtStatus, txtHumidity, txtCloud, txtWind, txtDay;
     ImageView imgIcon;
-
+    String City="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
+        GetCurrentWeatherData("Saigon");
         edSearch = (EditText) findViewById( R.id.edSearch );
         btnSearch = (Button) findViewById( R.id.btnSearch );
-        btnChangeActivity = (Button) findViewById( R.id.btnChangActivity );
+        btnChangeActivity = (Button) findViewById( R.id.btnChangeActivity );
         txtName = (TextView) findViewById( R.id.txtName );
         txtCountry = (TextView) findViewById( R.id.txtCountry );
         txtTemp = (TextView) findViewById( R.id.txtTemp );
@@ -52,7 +53,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String city = edSearch.getText().toString();
-                GetCurrentWeatherData( city );
+                if (city.equals("")){
+                    City="Saigon";
+                    GetCurrentWeatherData( City );
+
+                }else{
+                    City=city;
+                    GetCurrentWeatherData( City );
+                }
+
+            }
+        } );
+        btnChangeActivity.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String city = edSearch.getText().toString();
+                Intent intent=new Intent(MainActivity.this,MainActivity2.class);
+                intent.putExtra("name",city);
+                startActivity(intent);
             }
         } );
     }
@@ -85,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                             String humid = jsonObjectMain.getString( "humidity" );
                             Double a = Double.valueOf( temp );
                             String temperatue = String.valueOf( a.intValue() );
-                            txtTemp.setText( "temp: " + temperatue + "°C" );
+                            txtTemp.setText( "Temp: " + temperatue + "°C" );
                             txtHumidity.setText( humid + "%" );
                             JSONObject jsonObjectWind = jsonObject.getJSONObject( "wind" );
                             String wind = jsonObjectWind.getString( "speed" );
