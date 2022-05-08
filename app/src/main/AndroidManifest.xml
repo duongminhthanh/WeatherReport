@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WeatherReport">
         <activity
-            android:name=".MainActivity2"
+            android:name=".Forecast"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

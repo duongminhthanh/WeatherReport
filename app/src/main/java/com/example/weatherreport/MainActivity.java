@@ -55,12 +55,11 @@ public class MainActivity extends AppCompatActivity {
                 String city = edSearch.getText().toString();
                 if (city.equals("")){
                     City="Saigon";
-                    GetCurrentWeatherData( City );
 
                 }else{
                     City=city;
-                    GetCurrentWeatherData( City );
                 }
+                GetCurrentWeatherData( City );
 
             }
         } );
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String city = edSearch.getText().toString();
-                Intent intent=new Intent(MainActivity.this,MainActivity2.class);
+                Intent intent=new Intent(MainActivity.this, Forecast.class);
                 intent.putExtra("name",city);
                 startActivity(intent);
             }
@@ -87,9 +86,8 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject( response );
                             String name = jsonObject.getString( "name" );
                             txtName.setText( "Name of City: " + name );
-
                             Date date = new Date();
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "EEEE ,dd-MM-yyyy, HH:mm:ss" );
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "EEEE ,dd-MMMM-yyyy, HH:mm:ss" );
                             String Day = simpleDateFormat.format( date );
                             txtDay.setText( Day );
                             JSONArray jsonArrayWeather = jsonObject.getJSONArray( "weather" );
