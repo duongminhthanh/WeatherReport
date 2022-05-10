@@ -15,6 +15,13 @@ public class Weather {
         MinTemp = minTemp;
     }
 
+//    public Weather(String status, String image, String maxTemp, String minTemp) {
+//        this.status = status;
+//        Image = image;
+//        MaxTemp = maxTemp;
+//        MinTemp = minTemp;
+//    }
+
     public String getDay() {
         return day;
     }

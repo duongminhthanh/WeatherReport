@@ -50,7 +50,7 @@ public class CustomAdapter extends BaseAdapter {
         txtStatus.setText(weather.status);
         txtMaxTemp.setText(weather.MinTemp+"°C");
         txtMinTemp.setText(weather.MaxTemp+"°C");
-        Picasso.with( context ).load( "https://openweathermap.org/img/wn/" + weather.getImage() + ".png" ).into( imgStatus );
+        Picasso.with( context ).load( "https://openweathermap.org/img/wn/" + weather.Image + ".png" ).into( imgStatus );
 
         return view;
     }
