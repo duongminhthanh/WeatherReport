@@ -46,7 +46,7 @@ public class Forecast extends AppCompatActivity {
         listView.setAdapter( customAdapter );
         Intent intent = getIntent();
         String lat = intent.getStringExtra( "lat" );
-        String lon = intent.getStringExtra( "lot" );
+        String lon = intent.getStringExtra( "lon" );
         Get7DaysData(lat,lon);
         imgback.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -58,7 +58,7 @@ public class Forecast extends AppCompatActivity {
 
 
     private void Get7DaysData(String lat,String lon) {
-        String url = "https://api.openweathermap.org/data/2.5/onecall?lat=10.76&lon=106.66&exclude=minutely,hourly&units=metric&appid=5ceabeb9f84c5ce0b82a8d53243c81f6";
+        String url = "https://api.openweathermap.org/data/2.5/onecall?lat="+lat+"&lon="+lon+"&exclude=minutely,hourly&units=metric&appid=5ceabeb9f84c5ce0b82a8d53243c81f6";
         RequestQueue requestQueue = Volley.newRequestQueue( Forecast.this );
         StringRequest stringRequest = new StringRequest( Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -66,7 +66,6 @@ public class Forecast extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject( response );
                     String location=jsonObject.optString( "timezone" );
-
                     txtName.setText( location );
                     JSONArray jsonDailyList=jsonObject.getJSONArray( "daily" );
                     for (int i=0;i<jsonDailyList.length();i++){
@@ -74,12 +73,16 @@ public class Forecast extends AppCompatActivity {
                         String day=jsonObjectlist.getString( "dt" );
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "EEEE ,dd-MMMM-yyyy" );
                         long l=Long.valueOf( day );
-                        Date date=new Date(l*100L);
+                        Date date=new Date(l*1000L);
                         String Day = simpleDateFormat.format( date );
                         JSONObject jsonObjectTemp=jsonObjectlist.getJSONObject("temp");
                         String max=jsonObjectTemp.getString( "max" );
                         String min=jsonObjectTemp.getString( "min" );
-
+                        JSONArray jsonArrayWeather = jsonObjectlist.getJSONArray( "weather" );
+                        JSONObject jsonObjectWeather = jsonArrayWeather.getJSONObject( 0 );
+                        String status = jsonObjectWeather.getString( "description" );
+                        String icon = jsonObjectWeather.getString( "icon" );
+                        arrayWeathers.add( new Weather( Day, status, icon, max, min ) );
                     }
 
 //
