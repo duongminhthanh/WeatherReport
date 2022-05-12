@@ -24,6 +24,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
 public class Forecast extends AppCompatActivity {
 
@@ -33,7 +34,6 @@ public class Forecast extends AppCompatActivity {
     ListView listView;
     CustomAdapter customAdapter;
     ArrayList<Weather> arrayWeathers;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -45,15 +45,9 @@ public class Forecast extends AppCompatActivity {
         customAdapter = new CustomAdapter( Forecast.this, arrayWeathers );
         listView.setAdapter( customAdapter );
         Intent intent = getIntent();
-        String city = intent.getStringExtra( "name" );
-
-        if (city.equals( "" )) {
-            cityname = "Saigon";
-            Get7DaysData( cityname );
-        } else {
-            cityname = city;
-            Get7DaysData( cityname );
-        }
+        String lat = intent.getStringExtra( "lat" );
+        String lon = intent.getStringExtra( "lot" );
+        Get7DaysData(lat,lon);
         imgback.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,43 +56,60 @@ public class Forecast extends AppCompatActivity {
         } );
     }
 
-    private void Get7DaysData(String data) {
-        String url = "https://api.openweathermap.org/data/2.5/forecast?q=" + data + "&units=metric&cnt=7&appid=5ceabeb9f84c5ce0b82a8d53243c81f6";
+
+    private void Get7DaysData(String lat,String lon) {
+        String url = "https://api.openweathermap.org/data/2.5/onecall?lat=10.76&lon=106.66&exclude=minutely,hourly&units=metric&appid=5ceabeb9f84c5ce0b82a8d53243c81f6";
         RequestQueue requestQueue = Volley.newRequestQueue( Forecast.this );
         StringRequest stringRequest = new StringRequest( Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject( response );
-                    JSONObject jsonObjectCity = jsonObject.getJSONObject( "city" );
-                    String name = jsonObjectCity.getString( "name" );
-                    txtName.setText( name );
-                    JSONArray jsonArrayList = jsonObject.getJSONArray( "list" );
-                    for (int i = 0; i < jsonArrayList.length(); i++) {
-                        JSONObject jsonObjectList = jsonArrayList.getJSONObject( i );
-                        String day = jsonObjectList.getString( "dt" );
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "EEEE ,dd-MMMM-yyyy, HH:mm:ss" );
-//                      System.out.println( jsonArrayList );
-//                      System.out.println( day );
-                        Date date = new Date();
-//                      System.out.println( date );
+                    String location=jsonObject.optString( "timezone" );
+
+                    txtName.setText( location );
+                    JSONArray jsonDailyList=jsonObject.getJSONArray( "daily" );
+                    for (int i=0;i<jsonDailyList.length();i++){
+                        JSONObject jsonObjectlist=jsonDailyList.getJSONObject( i );
+                        String day=jsonObjectlist.getString( "dt" );
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "EEEE ,dd-MMMM-yyyy" );
+                        long l=Long.valueOf( day );
+                        Date date=new Date(l*100L);
                         String Day = simpleDateFormat.format( date );
-//                      System.out.println(Day);
-                        JSONObject jsonObjectTemp=jsonObjectList.getJSONObject( "main" );
-                        String max = jsonObjectTemp.getString( "temp_max" );
-                        String min = jsonObjectTemp.getString( "temp_min" );
-                        Double a = Double.valueOf( max );
-                        Double b = Double.valueOf( min );
-                        String tempMax = String.valueOf( a.intValue() );
-                        String tempMin = String.valueOf( b.intValue() );
-                        System.out.println( tempMax );
-                        System.out.println( tempMin );
-                        JSONArray jsonArrayWeather = jsonObjectList.getJSONArray( "weather" );
-                        JSONObject jsonObjectWeather = jsonArrayWeather.getJSONObject( 0 );
-                        String status = jsonObjectWeather.getString( "description" );
-                        String icon = jsonObjectWeather.getString( "icon" );
-                        arrayWeathers.add( new Weather( Day, status, icon, tempMax, tempMin ) );
+                        JSONObject jsonObjectTemp=jsonObjectlist.getJSONObject("temp");
+                        String max=jsonObjectTemp.getString( "max" );
+                        String min=jsonObjectTemp.getString( "min" );
+
                     }
+
+//
+//                    txtName.setText( (CharSequence) jsonObjectTimezone );
+//                    System.out.println( txtName.toString() );
+//                    JSONArray jsonArrayList = jsonObject.getJSONArray( "list" );
+//                    for (int i = 0; i < jsonArrayList.length(); i++) {
+//                        JSONObject jsonObjectList = jsonArrayList.getJSONObject( i );
+//                        String day = jsonObjectList.getString( "dt" );
+//                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "EEEE ,dd-MMMM-yyyy" );
+////                      System.out.println( jsonArrayList );
+////                      System.out.println( day );
+//                        long l = Long.valueOf( day );
+//                        Date date = new Date( l * 1000L );
+//                        String Day = simpleDateFormat.format( date );
+//                        JSONObject jsonObjectTemp = jsonObjectList.getJSONObject( "main" );
+//                        String max = jsonObjectTemp.getString( "temp_max" );
+//                        String min = jsonObjectTemp.getString( "temp_min" );
+//                        Double a = Double.valueOf( max );
+//                        Double b = Double.valueOf( min );
+//
+////                        System.out.println( tempMax );
+////                        System.out.println( tempMin );
+//                        JSONArray jsonArrayWeather = jsonObjectList.getJSONArray( "weather" );
+//                        JSONObject jsonObjectWeather = jsonArrayWeather.getJSONObject( 0 );
+//                        String status = jsonObjectWeather.getString( "description" );
+//                        String icon = jsonObjectWeather.getString( "icon" );
+//                        arrayWeathers.add( new Weather( Day, status, icon, max, min ) );
+
+
                     customAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();

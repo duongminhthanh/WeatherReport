@@ -1,5 +1,7 @@
 package com.example.weatherreport;
 
+import java.util.Date;
+
 public class Weather {
     public String day;
     public String status;
@@ -21,6 +23,7 @@ public class Weather {
 //        MaxTemp = maxTemp;
 //        MinTemp = minTemp;
 //    }
+
 
     public String getDay() {
         return day;

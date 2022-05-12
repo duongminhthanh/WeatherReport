@@ -29,14 +29,14 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
     EditText edSearch;
     Button btnSearch, btnChangeActivity;
-    TextView txtName, txtCountry, txtTemp, txtStatus, txtHumidity, txtCloud, txtWind, txtDay;
+    TextView txtName, txtCountry, txtTemp, txtStatus, txtHumidity, txtCloud, txtWind, txtDay, txtLat, txtLon;
     ImageView imgIcon;
-    String City="";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_main );
-        GetCurrentWeatherData("Saigon");
         edSearch = (EditText) findViewById( R.id.edSearch );
         btnSearch = (Button) findViewById( R.id.btnSearch );
         btnChangeActivity = (Button) findViewById( R.id.btnChangeActivity );
@@ -49,27 +49,24 @@ public class MainActivity extends AppCompatActivity {
         txtWind = (TextView) findViewById( R.id.txtWind );
         txtDay = (TextView) findViewById( R.id.txtDay );
         imgIcon = (ImageView) findViewById( R.id.imgIcon );
+        txtLat = (TextView) findViewById( R.id.txtLat );
+        txtLon = (TextView) findViewById( R.id.txtLon );
         btnSearch.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String city = edSearch.getText().toString();
-                if (city.equals("")){
-                    City="Saigon";
-
-                }else{
-                    City=city;
-                }
-                GetCurrentWeatherData( City );
-
+                GetCurrentWeatherData( city );
             }
         } );
         btnChangeActivity.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String city = edSearch.getText().toString();
-                Intent intent=new Intent(MainActivity.this, Forecast.class);
-                intent.putExtra("name",city);
-                startActivity(intent);
+                Intent intent = new Intent( MainActivity.this, Forecast.class );
+                intent.putExtra( "name", city );
+                intent.putExtra( "lat", txtLat.getText() );
+                intent.putExtra( "lon", txtLon.getText() );
+                startActivity( intent );
             }
         } );
     }
@@ -85,7 +82,12 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject( response );
                             String name = jsonObject.getString( "name" );
+                            JSONObject jsonObjectCoord = jsonObject.getJSONObject( "coord" );
+                            Double lon = jsonObjectCoord.getDouble( "lon" );
+                            Double lat = jsonObjectCoord.getDouble( "lat" );
                             txtName.setText( "Name of City: " + name );
+                            txtLat.setText( "Latitude: " + lat );
+                            txtLon.setText( "Longtitude: " + lon );
                             Date date = new Date();
                             SimpleDateFormat simpleDateFormat = new SimpleDateFormat( "EEEE ,dd-MMMM-yyyy, HH:mm:ss" );
                             String Day = simpleDateFormat.format( date );
