@@ -27,24 +27,38 @@
     </LinearLayout>
     <TextView
         android:layout_marginTop="2dp"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:text="Name of city"
         android:id="@+id/txtName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <TextView
         android:layout_marginTop="2dp"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:text="Name of country"
         android:id="@+id/txtCountry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_marginTop="2dp"
+        android:textSize="20dp"
+        android:text="Latitude"
+        android:id="@+id/txtLat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_marginTop="2dp"
+        android:textSize="20dp"
+        android:text="Longtitude"
+        android:id="@+id/txtLon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <ImageView
         android:id="@+id/imgIcon"
         android:layout_gravity="center"
         android:layout_marginTop="2dp"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         />
     <TextView
         android:layout_marginTop="2dp"
@@ -52,7 +66,7 @@
         android:layout_gravity="center"
         android:textColor="#f30"
         android:text="Tempertature"
-        android:textSize="35dp"
+        android:textSize="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <TextView
@@ -78,7 +92,7 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="174dp"
+                android:layout_height="172dp"
                 android:src="@drawable/humidity" />
 
             <TextView
@@ -110,7 +124,6 @@
                 android:textSize="20dp"
                 android:layout_gravity="center" />
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -120,16 +133,17 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="173dp"
-                android:src="@drawable/air" />
+                android:layout_height="172dp"
+                android:src="@drawable/air"
+               />
 
             <TextView
                 android:id="@+id/txtWind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:text="Wind"
                 android:textSize="20dp"
+                android:layout_gravity="center"
                 />
         </LinearLayout>
     </LinearLayout>
@@ -143,7 +157,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <Button
-        android:id="@+id/btnChangActivity"
+        android:id="@+id/btnChangeActivity"
         android:textSize="25dp"
         android:layout_marginTop="30dp"
         android:text="Next days"
